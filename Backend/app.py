@@ -34,15 +34,5 @@ def view_users():
     conn.close() 
     return render_template('index.html', data=data) 
 
-@app.route('/') 
-def index():
-    conn = psycopg2.connect(database="postgres", user="postgres", password="root", host="localhost", port="5432") 
-    cur = conn.cursor() 
-    cur.execute('''SELECT * FROM userinfo''') 
-    data = cur.fetchall() 
-    cur.close() 
-    conn.close() 
-    return render_template('index.html', data=data)
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
