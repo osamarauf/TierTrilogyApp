@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route('/view')
 def getUser():
     try:
-        response = requests.get('http://localhost:5000/view')
+        response = requests.get('http://localhost:5000/get')
         response.raise_for_status()
         userList = response.json()
         return render_template('index.html', userList=userList)
@@ -24,18 +24,13 @@ def createUser():
     password = request.form.get('password')
     data = {'username': username, 'email':email, 'password': password}
     response = requests.post('http://localhost:5000/create', json=data)
-    responses = requests.get('http://localhost:5000/view')
+    responses = requests.get('http://localhost:5000/get')
     userList = responses.json()
     if response.status_code == 200:
         return render_template('index.html', userList=userList)
     else:
         return jsonify({'error': 'Failed to create user'}), 500
     
-    
-    
-    
-        
-        
         
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
