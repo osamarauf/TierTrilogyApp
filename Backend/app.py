@@ -25,8 +25,8 @@ class UserInfo(db.Model):
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
 
-
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -48,6 +48,4 @@ def view_users():
     return jsonify(userData)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True, port=5000)
