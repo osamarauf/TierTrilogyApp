@@ -10,19 +10,21 @@ CORS(app)
 
 def create_db():
     SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-    print(f"Database URI: {SQLALCHEMY_DATABASE_URI}")
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return SQLAlchemy(app)
+
 
 
 db = create_db()
 
 class UserInfo(db.Model):
-    __table__ = 'userinfo'
+    __tablename__ = 'userinfo'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100))
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
+
 
 db.create_all()
 
