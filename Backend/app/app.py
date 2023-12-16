@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 import psycopg2
 
-app = Flask(__name__, template_folder="../Frontend/template")
+app = Flask(__name__,)
 
 conn = psycopg2.connect(database="postgres", user="postgres", password="root", host="localhost", port="5432") 
 cur = conn.cursor() 
@@ -10,29 +10,30 @@ conn.commit()
 cur.close() 
 conn.close() 
 
-@app.route('/register', methods=['POST']) 
+@app.route('/create', methods=['POST']) 
 def create(): 
     conn = psycopg2.connect(database="postgres", user="postgres", password="root", host="localhost", port="5432") 
     cur = conn.cursor() 
-    username = request.form['username'] 
-    email = request.form['email'] 
-    password = request.form['password'] 
+    data = request.json
+    username = data.get('username') 
+    email = data.get('email') 
+    password = data.get('password') 
     cur.execute('''INSERT INTO userinfo (username, email, password) VALUES (%s, %s, %s)''', (username, email, password)) 
     conn.commit() 
     cur.close() 
     conn.close() 
-  
-    return redirect(url_for('index')) 
+    return jsonify({'message': 'User Created'}), 200
 
-@app.route('/view', methods=['GET'])
+@app.route('/get', methods=['GET'])
 def view_users():
     conn = psycopg2.connect(database="postgres", user="postgres", password="root", host="localhost", port="5432") 
     cur = conn.cursor() 
     cur.execute('''SELECT * FROM userinfo''') 
-    data = cur.fetchall() 
+    data = cur.fetchall()
+    userData = [{'username': user[1], 'email':user[2], 'password': user[3]} for user in data]
     cur.close() 
     conn.close() 
-    return render_template('index.html', data=data) 
+    return jsonify(userData)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, port=5000)

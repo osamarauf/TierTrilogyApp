@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>TierTrilogyApp</title>
+  </head>
+  <body>
+    <h1>TierTrilogyApp</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>UserName</th>
+          <th>Email</th>
+          <th>Password</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in userList %}
+        <tr>
+          <td>{{ user['username'] }}</td>
+          <td>{{ user['email'] }}</td>
+          <td>{{ user['password'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <h2>Create a new User</h2>
+    <form action="/register" method="post">
+      <input type="text" name="username" placeholder="UserName" />
+      <input type="text" name="email" placeholder="Email" />
+      <input type="password" name="password" placeholder="Password" />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
