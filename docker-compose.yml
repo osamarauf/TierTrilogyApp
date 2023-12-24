@@ -23,6 +23,8 @@ services:
     restart: always
     networks:
       - mynetwork
+    depends_on:
+      - postgres
 
   frontend:
     build:
