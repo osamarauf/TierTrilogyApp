@@ -1,32 +1,10 @@
 version: "3"
 services:
-  backend:
+  postgres:
     build:
-      context: ./Backend
+      context: ./db_postgres
       dockerfile: Dockerfile
-    container_name: backend
-    environment:
-      - DB_HOST=flask_db
-    depends_on:
-      - db
-    ports:
-      - "5000:5000"
-    restart: always
-    networks:
-      - mynetwork
-    healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:5000/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  db:
-    container_name: flask_db
-    image: postgres:latest
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=postgres
+    container_name: app_db
     ports:
       - "5432:5432"
     restart: always
@@ -34,6 +12,17 @@ services:
       - mynetwork
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "5000:5000"
+    restart: always
+    networks:
+      - mynetwork
 
   frontend:
     build:
@@ -50,6 +39,5 @@ services:
 
 networks:
   mynetwork:
-
 volumes:
   postgres_data:
