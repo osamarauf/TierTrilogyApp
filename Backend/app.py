@@ -5,7 +5,6 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-load_dotenv()
 CORS(app)
 
 def create_db():
@@ -25,8 +24,8 @@ class UserInfo(db.Model):
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -48,4 +47,8 @@ def view_users():
     return jsonify(userData)
 
 if __name__ == '__main__':
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, port=5000)
+
