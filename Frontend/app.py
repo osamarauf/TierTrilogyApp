@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/view')
 def getUser():
     try:
-        response = requests.get('http://localhost:5000/get')
+        response = requests.get('http://backend:5000/get')
         response.raise_for_status()
         userList = response.json()
         return render_template('index.html', userList=userList)
