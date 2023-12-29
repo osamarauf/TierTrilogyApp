@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 def create_db():
-    SQLALCHEMY_DATABASE_URI = f"postgresql://postgres:root@localhost:5432/postgres"
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return SQLAlchemy(app)
@@ -47,4 +47,4 @@ def view_users():
     return jsonify(userData)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, host="0.0.0.0")
