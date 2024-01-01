@@ -4,15 +4,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
 app = Flask(__name__)
 CORS(app)
 
 def create_db():
-    SQLALCHEMY_DATABASE_URI = f"postgresql://postgres:root@postgres:5432/postgres"
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}" # f"postgresql://postgres:root@postgres:5432/postgres"
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return SQLAlchemy(app)
-
 
 
 db = create_db()

@@ -21,8 +21,8 @@ def createUser():
     email = request.form.get('email')
     password = request.form.get('password')
     data = {'username': username, 'email':email, 'password': password}
-    response = requests.post('http://localhost:5000/create', json=data)
-    responses = requests.get('http://localhost:5000/get')
+    response = requests.post('http://backend:5000/create', json=data)
+    responses = requests.get('http://backend:5000/get')
     userList = responses.json()
     if response.status_code == 200:
         return render_template('index.html', userList=userList)
