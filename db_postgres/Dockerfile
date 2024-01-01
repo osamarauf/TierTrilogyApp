@@ -1,5 +1,5 @@
 FROM postgres:latest
-ENV POSTGRES_DB=postgres
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=root
+WORKDIR /app
+COPY . .
 EXPOSE 5432
+CMD ["postgres", "-c", "config_file=/app/.env"]
