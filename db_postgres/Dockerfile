@@ -1,5 +1,7 @@
 FROM postgres:latest
-WORKDIR /app
-COPY . .
+ENV DB_USER=psotgres
+ENV DB_PASSWORD=root
+ENV DB_HOST=postgres
+ENV DB_PORT=5432
+ENV DB_NAME=postgres
 EXPOSE 5432
-CMD ["postgres", "-c", "config_file=/app/.env"]
