@@ -13,7 +13,6 @@ def create_db():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return SQLAlchemy(app)
 
-
 db = create_db()
 
 class UserInfo(db.Model):
