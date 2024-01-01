@@ -43,14 +43,14 @@ services:
 
   nginx:
     build:
-      context: ./reverse-proxy-nginx
+      context: ./nginxrp
       dockerfile: Dockerfile
-    container_name: nginx-reverse-proxy
+    container_name: nginxrp
     restart: always
     ports:
       - "80:80"
     networks:
-      - 3-tier-app_network
+      - mynetwork
     depends_on:
       - frontend
       - backend
