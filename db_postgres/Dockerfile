@@ -1,4 +1,6 @@
 FROM postgres:latest
-COPY . .
-RUN pip install python-dotenv
+ENV POSTGRES_DB=postgres
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=root
+ENV POSTGRES_HOST=postgres
 EXPOSE 5432
