@@ -7,7 +7,9 @@ app = Flask(__name__)
 @app.route('/view')
 def getUser():
     try:
-        response = requests.get('http://backend:5000/get')
+        hostname = request.host.split(':')[0]
+        api_url = f'http://{hostname}:80/get'
+        response = requests.get(api_url)
         response.raise_for_status()
         userList = response.json()
         return render_template('index.html', userList=userList)
@@ -21,8 +23,11 @@ def createUser():
     email = request.form.get('email')
     password = request.form.get('password')
     data = {'username': username, 'email':email, 'password': password}
-    response = requests.post('http://backend:5000/create', json=data)
-    responses = requests.get('http://backend:5000/get')
+    hostname = request.host.split(':')[0]
+    api_url_get = f'http://{hostname}:80/get'
+    api_url_create = f'http://{hostname}:80/create'
+    response = requests.post(api_url_create, json=data)
+    responses = requests.get(api_url_get)
     userList = responses.json()
     if response.status_code == 200:
         return render_template('index.html', userList=userList)
