@@ -1,0 +1,28 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: frontend-app
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+
+  nginx:
+    build:
+      context: ./nginxrp
+      dockerfile: Dockerfile
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - mynetwork
+    depends_on:
+      - frontend
+
+networks:
+  mynetwork:
+    driver: bridge
